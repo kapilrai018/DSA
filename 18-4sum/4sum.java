@@ -9,54 +9,41 @@ class Solution {
 
         Arrays.sort(nums);
 
-        for (int a = 0; a < n - 3; a++) {
-            if (a > 0 && nums[a] == nums[a - 1]) {
-                continue;
-            }
-            if ((long) nums[a] + nums[a + 1] + nums[a + 2] + nums[a + 3] > target) {
-                break;
-            }
-            if ((long) nums[a] + nums[n - 3] + nums[n - 2] + nums[n - 1] < target) {
-                continue;
-            }
+        for(int i = 0;i < n-3;i++ ){
+             if(i > 0 && nums[i] == nums[i-1])continue;
+            for(int j = i + 1; j < n-2; j++){
+               if(j > i+1 && nums[j] == nums[j-1])continue;
+                int  left = j + 1;
+                int  right = n - 1;
 
-            for (int b = a + 1; b < n - 2; b++) {
-                if (b > a + 1 && nums[b] == nums[b - 1]) {
-                    continue;
-                }
-                if ((long) nums[a] + nums[b] + nums[b + 1] + nums[b + 2] > target) {
-                    break;
-                }
-                if ((long) nums[a] + nums[b] + nums[n - 2] + nums[n - 1] < target) {
-                    continue;
-                }
-
-                int left = b + 1;
-                int right = n - 1;
-
-                while (left < right) {
-                    long sum = (long) nums[a] + nums[b] + nums[left] + nums[right];
-
-                    if (sum < target) {
+                while( left < right){
+                    long sum =(long)nums[i]+ nums[j]+ nums[left] + nums[right];
+                    if(sum < target){
                         left++;
-                    } else if (sum > target) {
-                        right--;
-                    } else {
-                        result.add(Arrays.asList(nums[a], nums[b], nums[left], nums[right]));
+                    }
 
-                        while (left < right && nums[left] == nums[left + 1]) {
+                    else if(sum > target){
+                        right--;
+                    }
+
+                    else{
+
+                        result.add(Arrays.asList(nums[i],nums[j],nums[left], nums[right]));
+
+                        left++;
+                        right--;
+                     
+                         while(left < right && nums[left] == nums[left-1]){
                             left++;
-                        }
-                        while (left < right && nums[right] == nums[right - 1]) {
+                         }
+
+                         while(left < right && nums[right] == nums[right+1]){
                             right--;
-                        }
-                        left++;
-                        right--;
+                         }
                     }
                 }
             }
         }
-
         return result;
     }
 }
